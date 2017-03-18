@@ -38,12 +38,12 @@ void drawShape(PGraphics pg, String sName, float xCenter, float yCenter, float n
 
 void setup() {
 
-  size(500, 500);
   RG.init(this);
   
   shapes = new TreeMap<String, RShape>();
   loadShapes(arrSuits);
   loadShapes(arrRanks);
+  println(); // Some space between us and any chatter Geomerative has generated
 
   // weird correction: The letter "A" for Ace is the only shape that requires this bizare hack   
   RShape sh = shapes.get("A");
@@ -58,7 +58,7 @@ void setup() {
   pg.endDraw();
   pg.dispose();
 
-  String cmdArray[] = {
+  String arrCmd1[] = {
     "pdftk",
     sketchPath() + "\\overlay.pdf",
     "background",
@@ -67,25 +67,47 @@ void setup() {
     sketchPath() + "\\CombinedFile.pdf"
   };
  
-  String sCmd = String.join(" ", cmdArray);
-  println();
-  println(sCmd);
+  String arrCmd2[] = {
+    "cmd",
+    "/c",
+    sketchPath() + "\\CombinedFile.pdf"
+  };
 
-  try {
-    Runtime.getRuntime().exec(sCmd);
-    Runtime.getRuntime().exec("cmd /c " + sketchPath() + "\\CombinedFile.pdf");
-  } catch(IOException e) {
-    println(e);
-  }
+  runProgram(arrCmd1, true); 
+  runProgram(arrCmd2, false); 
   
   exit();
 }
 
+void runProgram(String cmdArray[], boolean bWait) {
+
+  String sCmd = String.join(" ", cmdArray);
+  println(sCmd);
+
+  try {
+    Process pr = Runtime.getRuntime().exec(sCmd);
+    if (bWait == true) {
+      pr.waitFor();
+    }
+  } catch(Exception e) {
+    println(e);
+  }
+}
+
 void drawOverlay(PGraphics pg) {
 
+  float x = 34;
+  float nWidth  = 96.4;
+  float nHeight = 85;
+  
   pg.noFill();
   pg.stroke(255,0,0);
-  pg.rect(50, 50, 50, 50);
 
-  drawShape(pg, "A", 100, 100, 10);
+  for (int nCol = 0; nCol < 8; ++nCol) {
+    float y = 387;
+    pg.rect(x, y, nWidth, nHeight);
+    x = x + nWidth;
+  }
+
+//  drawShape(pg, "A", 100, 100, 10);
 }
