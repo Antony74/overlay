@@ -73,6 +73,7 @@ void setup() {
 
   try {
     Runtime.getRuntime().exec(sCmd);
+    Runtime.getRuntime().exec("cmd /c " + sketchPath() + "\\CombinedFile.pdf");
   } catch(IOException e) {
     println(e);
   }
@@ -81,6 +82,10 @@ void setup() {
 }
 
 void drawOverlay(PGraphics pg) {
+
+  pg.noFill();
+  pg.stroke(255,0,0);
   pg.rect(50, 50, 50, 50);
+
   drawShape(pg, "A", 100, 100, 10);
 }
