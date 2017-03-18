@@ -54,9 +54,33 @@ void setup() {
   
   PGraphics pg = createGraphics(827, 2200, PDF, "overlay.pdf");
   pg.beginDraw();
-  drawShape(pg, "A", 100, 100, 10);
+  drawOverlay(pg);
   pg.endDraw();
   pg.dispose();
+
+  String cmdArray[] = {
+    "pdftk",
+    sketchPath() + "\\overlay.pdf",
+    "background",
+    "\"" + sketchPath() + "\\BASIC ROUTINE INFOGRAPHIC.pdf\"",
+    "output",
+    sketchPath() + "\\CombinedFile.pdf"
+  };
+ 
+  String sCmd = String.join(" ", cmdArray);
+  println();
+  println(sCmd);
+
+  try {
+    Runtime.getRuntime().exec(sCmd);
+  } catch(IOException e) {
+    println(e);
+  }
   
   exit();
+}
+
+void drawOverlay(PGraphics pg) {
+  pg.rect(50, 50, 50, 50);
+  drawShape(pg, "A", 100, 100, 10);
 }
