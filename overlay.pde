@@ -9,11 +9,12 @@ import processing.pdf.*;
 
 TreeMap<String, RShape> shapes = new TreeMap<String, RShape>();
 
-String[] arrSuits = {"club", "diamond", "heart", "spade"};
+String[] arrSuits = {"diamond", "club", "heart", "spade"};
 String[] arrRanks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
-float[] arrRowHeight = {87, 86, 87, 87, 87, 94, 87, 87, 91, 91, 91, 87, 87, 87, 87};
-int[]   arrRowCount  = {13, 14, 12, 14, 15, 13, 12,  9};
+//                        0,   1,   2,   3,   4,   5,   6,    7,   8,   9,  10,   J,   Q,   K,   A
+float[] arrRowHeight = { 87,  86,  87,  90,  87,  93,  89, 86.5,  89,  91,  90,  87,  90,  87,  87};
+int[]   arrRowCount  = { 13,  14,  12,  14,  15,  13,  12,    9};
   
 void loadShapes(String[] arr) {
   for (int n = 0; n < arr.length; ++n) {
