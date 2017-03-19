@@ -41,6 +41,32 @@ void makeRed(RShape shape, boolean bRed) {
   }
 }
 
+void arcVertices(PGraphics pg, float x, float y, float radius, boolean bRight, boolean bBottom) {
+
+  int nCount = 30;
+  float start = 0;
+  
+  if        (!bRight && !bBottom) {
+    start = PI;
+  } else if (!bRight &&  bBottom) {
+    start = PI + HALF_PI;
+  } else if ( bRight && !bBottom) {
+    start = HALF_PI;
+  } else if ( bRight &&  bBottom) {
+    start = 0;
+  } else {
+    println("Logic fail!");
+  }
+
+  for (int n = 0; n <= nCount; ++n) {
+    
+    float angle = map(n, nCount, 0, start, start + HALF_PI);
+
+    pg.vertex( x + radius*cos(angle),
+               y + radius*sin(angle) );
+  }
+}
+
 void drawShape(
         PGraphics pg,
         String sName,
@@ -91,7 +117,6 @@ void setup() {
   paths[1].translate(-1.3,0);
   // End of weird correction
   
-  
   PGraphics pg = createGraphics(827, 2200, PDF, "overlay.pdf");
   pg.beginDraw();
   drawOverlay(pg);
@@ -139,9 +164,6 @@ void drawOverlay(PGraphics pg) {
   float x = 34;
   float nWidth  = 96.4;
   
-  pg.noFill();
-  pg.stroke(255,0,0);
-
   for (int nCol = 0; nCol < arrRowCount.length; ++nCol) {
     
     float y = 386;
@@ -156,18 +178,37 @@ void drawOverlay(PGraphics pg) {
     for (int nRow = 0; nRow < nRowCount; ++nRow) {
 
       float nHeight = arrRowHeight[nRow];
-      pg.rect(x, y, nWidth, nHeight);
 
+      // Draw rank and suit onto card
       String sRank = arrRanks[nRow - nRowCount + arrRanks.length];
 
       drawShape(pg, sRank, x + 15, y + 10, 10, bMakeRed, false);
       drawShape(pg, sSuit, x + 15, y + 22, 10, bMakeRed, false);
       
+      // And draw it upsidedown too
       float nPicHeight = nHeight - 25;
       
       drawShape(pg, sRank, x + nWidth - 15, y + nPicHeight - 10, 10, bMakeRed, true);
       drawShape(pg, sSuit, x + nWidth - 15, y + nPicHeight - 22, 10, bMakeRed, true);
 
+      // Prepare to fill in some background
+
+      int nRad = 5;
+      int nGap = nRad + 2;
+
+      // Draw the outline of each playing card with the characteristic curved corners
+      
+      pg.noFill();
+      pg.stroke(0);
+      
+      pg.beginShape();
+      arcVertices(pg, x + nGap,          y + nGap,           nRad, false, false);
+      arcVertices(pg, x + nGap,          y + nHeight - nGap, nRad, true,  false);
+      arcVertices(pg, x + nWidth - nGap, y + nHeight - nGap, nRad, true,  true );
+      arcVertices(pg, x + nWidth - nGap, y + nGap,           nRad, false, true );
+      pg.endShape(CLOSE);
+
+      // Next
       y = y + nHeight;
     }
     x = x + nWidth;
