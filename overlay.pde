@@ -24,8 +24,28 @@ void loadShapes(String[] arr) {
   }
 }
 
-void drawShape(PGraphics pg, String sName, float xCenter, float yCenter, float nHeight) {
+void makeRed(RShape shape, boolean bRed) {
+
+  if (bRed) {
+    shape.setStroke(color(255, 0, 0));
+    shape.setFill(color(255, 0, 0));
+  } else {
+    shape.setStroke(color(0, 0, 0));
+    shape.setFill(color(0, 0, 0));
+  }
+  
+  if (shape.children != null) {
+    for (int n = 0; n < shape.children.length; ++n) {
+      makeRed(shape.children[n], bRed);
+    }
+  }
+}
+
+void drawShape(PGraphics pg, String sName, float xCenter, float yCenter, float nHeight, boolean bMakeRed) {
   RShape shape = shapes.get(sName).toShape();
+
+  makeRed(shape, bMakeRed);
+  
   RPoint point = shape.getTopLeft();
   RPoint br = shape.getBottomRight();
   float shapeHeight = br.y - point.y;
@@ -107,8 +127,16 @@ void drawOverlay(PGraphics pg) {
   pg.stroke(255,0,0);
 
   for (int nCol = 0; nCol < arrRowCount.length; ++nCol) {
+    
     float y = 386;
+    String sSuit = arrSuits[nCol % arrSuits.length];
     int nRowCount = arrRowCount[nCol];
+
+    boolean bMakeRed = false;
+    if (sSuit.equals("heart") || sSuit.equals("diamond")) {
+      bMakeRed = true;
+    }
+
     for (int nRow = 0; nRow < nRowCount; ++nRow) {
 
       float nHeight = arrRowHeight[nRow];
@@ -116,7 +144,8 @@ void drawOverlay(PGraphics pg) {
 
       String sRank = arrRanks[nRow - nRowCount + arrRanks.length];
 
-      drawShape(pg, sRank, x + 15, y + 10, 10);
+      drawShape(pg, sRank, x + 15, y + 10, 10, bMakeRed);
+      drawShape(pg, sSuit, x + 15, y + 22, 10, bMakeRed);
       
       y = y + nHeight;
     }
