@@ -11,6 +11,9 @@ TreeMap<String, RShape> shapes = new TreeMap<String, RShape>();
 
 String[] arrSuits = {"club", "diamond", "heart", "spade"};
 String[] arrRanks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
+float[] arrRowHeight = {87, 86, 87, 87, 87, 94, 87, 87, 91, 91, 91, 87, 87, 87, 87};
+int[]   arrRowCount  = {13, 14, 12, 14, 15, 13, 12,  9};
   
 void loadShapes(String[] arr) {
   for (int n = 0; n < arr.length; ++n) {
@@ -20,15 +23,15 @@ void loadShapes(String[] arr) {
   }
 }
 
-void drawShape(PGraphics pg, String sName, float xCenter, float yCenter, float nWidth) {
+void drawShape(PGraphics pg, String sName, float xCenter, float yCenter, float nHeight) {
   RShape shape = shapes.get(sName).toShape();
   RPoint point = shape.getTopLeft();
   RPoint br = shape.getBottomRight();
-  float shapeWidth = br.x - point.x;
+  float shapeHeight = br.y - point.y;
   point.x = -(point.x + br.x) / 2;
   point.y = -(point.y + br.y) / 2;
   shape.translate(point);
-  shape.scale(abs(nWidth/shapeWidth));
+  shape.scale(abs(nHeight/shapeHeight));
   
   point.x = xCenter;
   point.y = yCenter;
@@ -98,16 +101,25 @@ void drawOverlay(PGraphics pg) {
 
   float x = 34;
   float nWidth  = 96.4;
-  float nHeight = 85;
   
   pg.noFill();
   pg.stroke(255,0,0);
 
-  for (int nCol = 0; nCol < 8; ++nCol) {
-    float y = 387;
-    pg.rect(x, y, nWidth, nHeight);
+  for (int nCol = 0; nCol < arrRowCount.length; ++nCol) {
+    float y = 386;
+    int nRowCount = arrRowCount[nCol];
+    for (int nRow = 0; nRow < nRowCount; ++nRow) {
+
+      float nHeight = arrRowHeight[nRow];
+      pg.rect(x, y, nWidth, nHeight);
+
+      String sRank = arrRanks[nRow - nRowCount + arrRanks.length];
+
+      drawShape(pg, sRank, x + 15, y + 10, 10);
+      
+      y = y + nHeight;
+    }
     x = x + nWidth;
   }
 
-//  drawShape(pg, "A", 100, 100, 10);
 }
