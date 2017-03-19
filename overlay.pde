@@ -218,16 +218,37 @@ void drawOverlay(PGraphics pg) {
       arcVertices(pg, x + nWidth - nGap, y + nHeight - nGap, nRad, true,  true );
       arcVertices(pg, x + nWidth - nGap, y + nGap,           nRad, false, true );
       arcVertices(pg, x + nGap,          y + nGap,           nRad, false, false);
-      pg.vertex(x- 1      , y - 1);
-      pg.vertex(x + nWidth+1, y-1          );
-      pg.vertex(x + nWidth+1, y + nHeight+1);
-      pg.vertex(x - 1,          y + nHeight + 1);
+      pg.vertex(x - 1,        y - 1          );
+      pg.vertex(x + nWidth+1, y - 1          );
+      pg.vertex(x + nWidth+1, y + nHeight + 1);
+      pg.vertex(x - 1,        y + nHeight + 1);
+      pg.endShape(CLOSE);
+
+      // Make the playing cards more white so they look more like playing cards
+      pg.fill(240);
+
+      int nThickness = 3;
+      int nDepth = 62;
+
+      pg.beginShape();
+      arcVertices(pg, x + nGap,          y + nGap,           nRad, false, false);
+      pg.vertex(x + 2,    y + nDepth);
+      pg.vertex(x + nGap + nThickness, y + nDepth);
+      pg.vertex(x + nGap + nThickness, y + 2);
+      pg.endShape(CLOSE);
+
+      pg.beginShape();
+      arcVertices(pg, x + nWidth - nGap, y + nGap,           nRad, false, true );
+      pg.vertex(x + nWidth - nGap - nThickness, y + 2);
+      pg.vertex(x + nWidth - nGap - nThickness, y + nDepth);
+      pg.vertex(x + nWidth - 2,    y + nDepth);
       pg.endShape(CLOSE);
 
       // Draw the outline of each playing card with the characteristic curved corners
       
       pg.noFill();
       pg.stroke(0);
+      pg.strokeWeight(1.5);
       
       pg.beginShape();
       arcVertices(pg, x + nGap,          y + nGap,           nRad, false, false);
