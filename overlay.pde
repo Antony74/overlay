@@ -189,20 +189,6 @@ void drawOverlay(PGraphics pg) {
 
       float nHeight = arrRowHeight[nRow];
 
-      // Draw rank and suit onto card
-      String sRank = arrRanks[nRow - nRowCount + arrRanks.length];
-
-      drawShape(pg, sRank, x + 15, y + 10, 10, bMakeRed, false);
-      drawShape(pg, sSuit, x + 15, y + 22, 10, bMakeRed, false);
-      
-      // And draw it upsidedown too
-      float nPicHeight = nHeight - 25;
-      
-      drawShape(pg, sRank, x + nWidth - 15, y + nPicHeight - 10, 10, bMakeRed, true);
-      drawShape(pg, sSuit, x + nWidth - 15, y + nPicHeight - 22, 10, bMakeRed, true);
-
-      // Prepare to fill in some background
-
       int nRad = 5;
       int nGap = nRad + 2;
 
@@ -256,6 +242,17 @@ void drawOverlay(PGraphics pg) {
       arcVertices(pg, x + nWidth - nGap, y + nHeight - nGap, nRad, true,  true );
       arcVertices(pg, x + nWidth - nGap, y + nGap,           nRad, false, true );
       pg.endShape(CLOSE);
+
+      // Draw rank and suit onto card
+      String sRank = arrRanks[nRow - nRowCount + arrRanks.length];
+
+      drawShape(pg, sRank, x + 7, y + 12, 10, bMakeRed, false);
+      drawShape(pg, sSuit, x + 7, y + 24, 10, bMakeRed, false);
+      
+      // And draw it upsidedown too
+      
+      drawShape(pg, sRank, x + nWidth - 7, y + nDepth -  8, 10, bMakeRed, true);
+      drawShape(pg, sSuit, x + nWidth - 7, y + nDepth - 20, 10, bMakeRed, true);
 
       // Next
       y = y + nHeight;
