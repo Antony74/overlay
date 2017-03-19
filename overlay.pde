@@ -161,12 +161,22 @@ void runProgram(String cmdArray[], boolean bWait) {
 
 void drawOverlay(PGraphics pg) {
 
-  float x = 34;
+  float xBase = 34;
+  float yBase = 386;
+  
+  float x = xBase;
   float nWidth  = 96.4;
+  
+  float nTotalWidth = 96.4 * arrRowCount.length;
+  float nTotalHeight = 0;
+
+  for (int nRow = 0; nRow < arrRowHeight.length; ++nRow) {
+    nTotalHeight += arrRowHeight[nRow];
+  }
   
   for (int nCol = 0; nCol < arrRowCount.length; ++nCol) {
     
-    float y = 386;
+    float y = yBase;
     String sSuit = arrSuits[nCol % arrSuits.length];
     int nRowCount = arrRowCount[nCol];
 
@@ -196,6 +206,24 @@ void drawOverlay(PGraphics pg) {
       int nRad = 5;
       int nGap = nRad + 2;
 
+      // Draw a green card table
+      
+      pg.noStroke();
+      pg.fill(0, 200, 0);
+
+      pg.beginShape();
+      pg.vertex(x - 1, y - 1);
+      arcVertices(pg, x + nGap,          y + nGap,           nRad, false, false);
+      arcVertices(pg, x + nGap,          y + nHeight - nGap, nRad, true,  false);
+      arcVertices(pg, x + nWidth - nGap, y + nHeight - nGap, nRad, true,  true );
+      arcVertices(pg, x + nWidth - nGap, y + nGap,           nRad, false, true );
+      arcVertices(pg, x + nGap,          y + nGap,           nRad, false, false);
+      pg.vertex(x- 1      , y - 1);
+      pg.vertex(x + nWidth+1, y-1          );
+      pg.vertex(x + nWidth+1, y + nHeight+1);
+      pg.vertex(x - 1,          y + nHeight + 1);
+      pg.endShape(CLOSE);
+
       // Draw the outline of each playing card with the characteristic curved corners
       
       pg.noFill();
@@ -211,7 +239,33 @@ void drawOverlay(PGraphics pg) {
       // Next
       y = y + nHeight;
     }
+
+    // Fill in empty space with card table green
+
+    pg.noStroke();
+    pg.fill(0, 200, 0);
+
+    for (int nRow = nRowCount; nRow < arrRowHeight.length; ++nRow) {
+      
+      float nHeight = arrRowHeight[nRow];
+
+      pg.rect(x - 1, y - 1, nWidth + 2, nHeight + 2);
+
+      // Next
+      y = y + nHeight;
+    }
+
     x = x + nWidth;
   }
 
+  // Draw a little more card table around the edges
+
+  pg.noFill();
+  pg.stroke(0, 200, 0);
+  pg.strokeWeight(4);
+  pg.rect(xBase - 2, yBase - 2, nTotalWidth + 4, nTotalHeight + 4);
+
+  pg.stroke(0);
+  pg.strokeWeight(1);
+  pg.rect(xBase - 4, yBase - 4, nTotalWidth + 8, nTotalHeight + 8);
 }
