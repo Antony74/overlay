@@ -29,7 +29,7 @@ void makeRed(RShape shape, boolean bRed) {
   if (bRed) {
     shape.setStroke(color(255, 0, 0));
     shape.setFill(color(255, 0, 0));
-  } else {
+  } else { // Not being able to find any proper cloning functionality is starting to grate!
     shape.setStroke(color(0, 0, 0));
     shape.setFill(color(0, 0, 0));
   }
@@ -41,8 +41,16 @@ void makeRed(RShape shape, boolean bRed) {
   }
 }
 
-void drawShape(PGraphics pg, String sName, float xCenter, float yCenter, float nHeight, boolean bMakeRed) {
-  RShape shape = shapes.get(sName).toShape();
+void drawShape(
+        PGraphics pg,
+        String sName,
+        float xCenter,
+        float yCenter,
+        float nHeight,
+        boolean bMakeRed,
+        boolean bUpsideDown) {
+  
+  RShape shape = shapes.get(sName);
 
   makeRed(shape, bMakeRed);
   
@@ -54,10 +62,18 @@ void drawShape(PGraphics pg, String sName, float xCenter, float yCenter, float n
   shape.translate(point);
   shape.scale(abs(nHeight/shapeHeight));
   
+  if (bUpsideDown) {
+    shape.rotate(PI);
+  }
+  
   point.x = xCenter;
   point.y = yCenter;
   shape.translate(point);
   shape.draw(pg);
+
+  if (bUpsideDown) { // Not being able to find any proper cloning functionality is starting to grate! 
+    shape.rotate(PI);
+  }
 }
 
 void setup() {
@@ -144,9 +160,14 @@ void drawOverlay(PGraphics pg) {
 
       String sRank = arrRanks[nRow - nRowCount + arrRanks.length];
 
-      drawShape(pg, sRank, x + 15, y + 10, 10, bMakeRed);
-      drawShape(pg, sSuit, x + 15, y + 22, 10, bMakeRed);
+      drawShape(pg, sRank, x + 15, y + 10, 10, bMakeRed, false);
+      drawShape(pg, sSuit, x + 15, y + 22, 10, bMakeRed, false);
       
+      float nPicHeight = nHeight - 25;
+      
+      drawShape(pg, sRank, x + nWidth - 15, y + nPicHeight - 10, 10, bMakeRed, true);
+      drawShape(pg, sSuit, x + nWidth - 15, y + nPicHeight - 22, 10, bMakeRed, true);
+
       y = y + nHeight;
     }
     x = x + nWidth;
