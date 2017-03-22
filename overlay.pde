@@ -16,6 +16,10 @@ String[] arrRanks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J"
 float[] arrRowHeight = { 87,  86,  87,  90,  87,  93,  89, 86.5,  89,  91,  90,  87,  90,  87,  87};
 int[]   arrRowCount  = { 13,  14,  12,  14,  15,  13,  12,    9};
   
+void pv_line(PGraphics pg, PVector start, PVector end) {
+  pg.line(start.x, start.y, end.x, end.y);
+}
+
 void loadShapes(String[] arr) {
   for (int n = 0; n < arr.length; ++n) {
     String sShape = arr[n];
@@ -120,6 +124,12 @@ void setup() {
   PGraphics pg = createGraphics(827, 2200, PDF, "overlay.pdf");
   pg.beginDraw();
   drawOverlay(pg);
+
+  // Test squat - FIX ME
+  PGraphics squat = squat();
+  pg.image(squat, 0, 0, pg.width, pg.height);
+  // End of test squat
+
   pg.endDraw();
   pg.dispose();
 
