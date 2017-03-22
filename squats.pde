@@ -4,6 +4,7 @@ PGraphics squat() {
   PGraphics pg = createGraphics(220, 350);
   pg.beginDraw();
   pg.rectMode(CENTER);
+  pg.translate(-200, -50);
 
   stroke(0);
 
@@ -27,5 +28,6 @@ PGraphics squat() {
   pg.ellipse(293, 93, 50, 50);
 
   pg.endDraw();
+
   return pg;
 }

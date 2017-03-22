@@ -7,9 +7,9 @@ import geomerative.*;
 import java.util.TreeMap;
 import processing.pdf.*;
 
-TreeMap<String, RShape> shapes = new TreeMap<String, RShape>();
+TreeMap<String, RShape> mapRanks;
 
-String[] arrSuits = {"diamond", "club", "heart", "spade"};
+String[] arrSuits = {"squat", "club", "heart", "spade", "diamond", "club", "heart", "spade"};
 String[] arrRanks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
 //                        0,   1,   2,   3,   4,   5,   6,    7,   8,   9,  10,   J,   Q,   K,   A
@@ -20,11 +20,11 @@ void pv_line(PGraphics pg, PVector start, PVector end) {
   pg.line(start.x, start.y, end.x, end.y);
 }
 
-void loadShapes(String[] arr) {
+void loadRanks(String[] arr) {
   for (int n = 0; n < arr.length; ++n) {
     String sShape = arr[n];
     RShape shape = RG.loadShape(sShape + ".svg");
-    shapes.put(sShape, shape);
+    mapRanks.put(sShape, shape);
   }
 }
 
@@ -71,7 +71,7 @@ void arcVertices(PGraphics pg, float x, float y, float radius, boolean bRight, b
   }
 }
 
-void drawShape(
+void drawRank(
         PGraphics pg,
         String sName,
         float xCenter,
@@ -79,9 +79,21 @@ void drawShape(
         float nHeight,
         boolean bMakeRed,
         boolean bUpsideDown) {
-  
-  RShape shape = shapes.get(sName);
 
+  RShape shape = mapRanks.get(sName);
+
+  drawShape(pg, shape, xCenter, yCenter, nHeight, bMakeRed, bUpsideDown);
+}
+
+void drawShape(
+        PGraphics pg,
+        RShape shape,
+        float xCenter,
+        float yCenter,
+        float nHeight,
+        boolean bMakeRed,
+        boolean bUpsideDown) {
+  
   makeRed(shape, bMakeRed);
   
   RPoint point = shape.getTopLeft();
@@ -110,13 +122,16 @@ void setup() {
 
   RG.init(this);
   
-  shapes = new TreeMap<String, RShape>();
-  loadShapes(arrSuits);
-  loadShapes(arrRanks);
+  mapRanks = new TreeMap<String, RShape>();
+  mapSuits = new TreeMap<String, Suit>();
+
+  loadRanks(arrRanks);
+  loadSuits(arrSuits);
+
   println(); // Some space between us and any chatter Geomerative has generated
 
   // weird correction: The letter "A" for Ace is the only shape that requires this bizare hack   
-  RShape sh = shapes.get("A");
+  RShape sh = mapRanks.get("A");
   RPath paths[] = sh.children[0].children[0].paths;
   paths[1].translate(-1.3,0);
   // End of weird correction
@@ -124,11 +139,6 @@ void setup() {
   PGraphics pg = createGraphics(827, 2200, PDF, "overlay.pdf");
   pg.beginDraw();
   drawOverlay(pg);
-
-  // Test squat - FIX ME
-  PGraphics squat = squat();
-  pg.image(squat, 0, 0, pg.width, pg.height);
-  // End of test squat
 
   pg.endDraw();
   pg.dispose();
@@ -190,10 +200,7 @@ void drawOverlay(PGraphics pg) {
     String sSuit = arrSuits[nCol % arrSuits.length];
     int nRowCount = arrRowCount[nCol];
 
-    boolean bMakeRed = false;
-    if (sSuit.equals("heart") || sSuit.equals("diamond")) {
-      bMakeRed = true;
-    }
+    boolean bMakeRed = (nCol % 2 == 0);
 
     for (int nRow = 0; nRow < nRowCount; ++nRow) {
 
@@ -256,13 +263,13 @@ void drawOverlay(PGraphics pg) {
       // Draw rank and suit onto card
       String sRank = arrRanks[nRow - nRowCount + arrRanks.length];
 
-      drawShape(pg, sRank, x + 7, y + 12, 10, bMakeRed, false);
-      drawShape(pg, sSuit, x + 7, y + 24, 10, bMakeRed, false);
+      drawRank(pg, sRank, x + 7, y + 12, 10, bMakeRed, false);
+      drawSuit(pg, sSuit, x + 7, y + 24, 10, bMakeRed, false);
       
       // And draw it upsidedown too
       
-      drawShape(pg, sRank, x + nWidth - 7, y + nDepth -  8, 10, bMakeRed, true);
-      drawShape(pg, sSuit, x + nWidth - 7, y + nDepth - 20, 10, bMakeRed, true);
+      drawRank(pg, sRank, x + nWidth - 7, y + nDepth -  8, 10, bMakeRed, true);
+      drawSuit(pg, sSuit, x + nWidth - 7, y + nDepth - 20, 10, bMakeRed, true);
 
       // Next
       y = y + nHeight;
