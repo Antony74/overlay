@@ -9,8 +9,9 @@ import processing.pdf.*;
 
 TreeMap<String, RShape> mapRanks;
 
-String[] arrSuits = {"squat", "club", "heart", "spade", "diamond", "club", "heart", "spade"};
-String[] arrRanks = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+String[] arrSpecialSuits  = {"squat", "club", "heart", "spade", "diamond", "club", "heart", "spade"};
+String[] arrStandardSuits = {"diamond", "club", "heart", "spade"};
+String[] arrRanks         = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
 //                        0,   1,   2,   3,   4,   5,   6,    7,   8,   9,  10,   J,   Q,   K,   A
 float[] arrRowHeight = { 87,  86,  87,  90,  87,  93,  89, 86.5,  89,  91,  90,  87,  90,  87,  87};
@@ -126,7 +127,8 @@ void setup() {
   mapSuits = new TreeMap<String, Suit>();
 
   loadRanks(arrRanks);
-  loadSuits(arrSuits);
+  loadSuits(arrSpecialSuits);
+  loadSuits(arrStandardSuits);
 
   println(); // Some space between us and any chatter Geomerative has generated
 
@@ -134,32 +136,21 @@ void setup() {
   RShape sh = mapRanks.get("A");
   RPath paths[] = sh.children[0].children[0].paths;
   paths[1].translate(-1.3,0);
-  // End of weird correction
-  
-  PGraphics pg = createGraphics(827, 2200, PDF, "overlay.pdf");
-  pg.beginDraw();
-  drawOverlay(pg);
 
-  pg.endDraw();
-  pg.dispose();
-
-  String arrCmd1[] = {
-    "pdftk",
-    sketchPath() + "\\overlay.pdf",
-    "background",
-    "\"" + sketchPath() + "\\BASIC ROUTINE INFOGRAPHIC.pdf\"",
-    "output",
-    sketchPath() + "\\CombinedFile.pdf"
-  };
+   // Create and combine two overlays (we want to keep a choice of suits)
  
-  String arrCmd2[] = {
+  createAndCombine("overlay.pdf", "combinedFile.pdf", arrSpecialSuits);
+  createAndCombine("overlayWithStandardSuits.pdf", "combinedFileWithStandardSuits.pdf", arrStandardSuits);
+
+  // Bring the pdf up in Adobe Reader or whatever program is associated with .pdf
+
+  String arrCmd[] = {
     "cmd",
     "/c",
     sketchPath() + "\\CombinedFile.pdf"
   };
 
-  runProgram(arrCmd1, true); 
-  runProgram(arrCmd2, false); 
+  runProgram(arrCmd, false); 
   
   exit();
 }
@@ -179,7 +170,10 @@ void runProgram(String cmdArray[], boolean bWait) {
   }
 }
 
-void drawOverlay(PGraphics pg) {
+void createAndCombine(String sOverlayFilename, String sCombinedFilename, String[] arrSuits) {
+
+  PGraphics pg = createGraphics(827, 2200, PDF, sOverlayFilename);
+  pg.beginDraw();
 
   float xBase = 34;
   float yBase = 386;
@@ -303,4 +297,20 @@ void drawOverlay(PGraphics pg) {
   pg.stroke(0);
   pg.strokeWeight(1);
   pg.rect(xBase - 4, yBase - 4, nTotalWidth + 8, nTotalHeight + 8);
+
+  pg.endDraw();
+  pg.dispose();
+
+  // Overlay created.  Now combine.
+
+  String arrCmd[] = {
+    "pdftk",
+    sketchPath() + "\\" + sOverlayFilename,
+    "background",
+    "\"" + sketchPath() + "\\BASIC ROUTINE INFOGRAPHIC.pdf\"",
+    "output",
+    sketchPath() + "\\" + sCombinedFilename
+  };
+
+  runProgram(arrCmd, true); 
 }
