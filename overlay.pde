@@ -121,6 +121,8 @@ void drawShape(
 
 void setup() {
 
+  size(600, 600);
+  background(0, 0, 128);
   RG.init(this);
   
   mapRanks = new TreeMap<String, RShape>();
@@ -137,7 +139,20 @@ void setup() {
   RPath paths[] = sh.children[0].children[0].paths;
   paths[1].translate(-1.3,0);
 
-   // Create and combine two overlays (we want to keep a choice of suits)
+  // Maybe we want to view a suit
+  PGraphics pgView = null; //squat();
+
+  if (pgView != null) {
+    pushMatrix();
+    fill(200);
+    noStroke();
+    translate( (width - pgView.width) / 2, (height - pgView.height) / 2 );
+    rect(0,0, pgView.width, pgView.height);
+    image(pgView, 0, 0);
+    popMatrix();
+  }
+  
+  // Create and combine two overlays (we want to keep a choice of suits)
  
   createAndCombine("overlay.pdf", "combinedFile.pdf", arrSpecialSuits);
   createAndCombine("overlayWithStandardSuits.pdf", "combinedFileWithStandardSuits.pdf", arrStandardSuits);
@@ -150,9 +165,11 @@ void setup() {
     sketchPath() + "\\CombinedFile.pdf"
   };
 
-  runProgram(arrCmd, false); 
-  
-  exit();
+  if (pgView == null) {
+
+    runProgram(arrCmd, false); 
+    exit();
+  }
 }
 
 void runProgram(String cmdArray[], boolean bWait) {

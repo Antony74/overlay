@@ -52,8 +52,31 @@ class Suit
     }
     
     if (m_pg != null) {
+
+      float fudge = 4;
+      
+      pg.pushMatrix();
+      
+      if (bUpsideDown) {
+        yCenter -= fudge;
+      } else {
+        yCenter += fudge;
+      }
+      
       float nWidth = (nHeight / m_pg.height) * m_pg.width;
-      pg.image(m_pg, xCenter - nWidth, yCenter - nHeight, nWidth*2, nHeight*2);
+      float factor = 1.5;
+
+      pg.translate(xCenter, yCenter); 
+
+      if (bUpsideDown) {
+        pg.rotate(PI);
+      }
+
+      pg.translate( -0.5*factor*nWidth, -0.5*factor*nHeight );
+      
+      pg.image(m_pg, 0, 0, nWidth*factor, nHeight*factor);
+
+      pg.popMatrix();
     }
   }
 
