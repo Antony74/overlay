@@ -140,7 +140,8 @@ void setup() {
   paths[1].translate(-1.3,0);
 
   // Maybe we want to view a suit
-  PGraphics pgView = null; //squat();
+  PGraphics pgView = null;
+//  PGraphics pgView = squat();
 
   if (pgView != null) {
     pushMatrix();

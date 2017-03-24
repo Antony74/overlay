@@ -1,10 +1,12 @@
 
 PGraphics squat() {
+
+  int headHeight = 70;
   
-  PGraphics pg = createGraphics(220, 350);
+  PGraphics pg = createGraphics(220, 310 + headHeight);
   pg.beginDraw();
   pg.rectMode(CENTER);
-  pg.translate(-200, -50);
+  pg.translate(-200, 40 - headHeight);
 
   stroke(0);
 
@@ -15,7 +17,7 @@ PGraphics squat() {
   PVector ankle    = new PVector(277, 366);
   PVector toe      = new PVector(310, 366);
 
-  pg.strokeWeight(35);
+  pg.strokeWeight(70);
 
   pv_line(pg, armStart, hand);
   pv_line(pg, armStart, pelvis);
@@ -25,7 +27,7 @@ PGraphics squat() {
 
   pg.fill(0);
   pg.strokeWeight(1);
-  pg.ellipse(293, 93, 50, 50);
+  pg.ellipse(293, 73, headHeight, headHeight);
 
   pg.endDraw();
 
