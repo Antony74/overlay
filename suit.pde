@@ -64,7 +64,7 @@ class Suit
       }
       
       float nWidth = (nHeight / m_pg.height) * m_pg.width;
-      float factor = 1.5;
+      float factor = 1.6;
 
       pg.translate(xCenter, yCenter); 
 
@@ -73,8 +73,9 @@ class Suit
       }
 
       pg.translate( -0.5*factor*nWidth, -0.5*factor*nHeight );
-      
-      pg.image(m_pg, 0, 0, nWidth*factor, nHeight*factor);
+      pg.scale(factor * nHeight/ m_pg.height);
+
+      pg.image(m_pg, 0, 0);
 
       pg.popMatrix();
     }
