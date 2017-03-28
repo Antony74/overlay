@@ -67,7 +67,7 @@ class Suit
     
     if (pgSuit != null) {
 
-      float fudge = 4;
+      float fudge = 2;
       
       pg.pushMatrix();
       
