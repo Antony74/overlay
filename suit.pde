@@ -36,7 +36,19 @@ class Suit
   }
   
   Suit(PGraphics pg){
-    m_pg = pg;
+    m_pgBlack = pg;
+    m_pgRed = createGraphics(pg.width, pg.height);
+    m_pgRed.beginDraw();
+    m_pgRed.image(pg, 0, 0);  
+    m_pgRed.loadPixels();
+
+    for (int n = 0; n < m_pgRed.pixels.length; ++n) {
+      color c = m_pgRed.pixels[n];
+      m_pgRed.pixels[n] = color(255, green(c), blue(c), alpha(c));
+    }
+    
+    m_pgRed.updatePixels();
+    m_pgRed.endDraw();
   }
 
   void draw(
@@ -51,7 +63,9 @@ class Suit
       drawShape(pg, m_shape, xCenter, yCenter, nHeight, bMakeRed, bUpsideDown);
     }
     
-    if (m_pg != null) {
+    PGraphics pgSuit = bMakeRed ? m_pgRed : m_pgBlack;
+    
+    if (pgSuit != null) {
 
       float fudge = 4;
       
@@ -63,7 +77,7 @@ class Suit
         yCenter += fudge;
       }
       
-      float nWidth = (nHeight / m_pg.height) * m_pg.width;
+      float nWidth = (nHeight / pgSuit.height) * pgSuit.width;
       float factor = 1.6;
 
       pg.translate(xCenter, yCenter); 
@@ -73,14 +87,15 @@ class Suit
       }
 
       pg.translate( -0.5*factor*nWidth, -0.5*factor*nHeight );
-      pg.scale(factor * nHeight/ m_pg.height);
+      pg.scale(factor * nHeight/ pgSuit.height);
 
-      pg.image(m_pg, 0, 0);
+      pg.image(pgSuit, 0, 0);
 
       pg.popMatrix();
     }
   }
 
   RShape m_shape;
-  PGraphics m_pg;
+  PGraphics m_pgBlack;
+  PGraphics m_pgRed;
 };
