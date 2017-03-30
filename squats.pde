@@ -1,5 +1,5 @@
 
-PGraphics squat() {
+PGraphics squat(boolean bShowPoints) {
 
   int headHeight = 90;
   
@@ -31,6 +31,16 @@ PGraphics squat() {
   pg.fill(0);
   pg.strokeWeight(1);
   pg.ellipse(293, 65, headHeight, headHeight);
+
+   if (bShowPoints) {
+    pg.stroke(255, 0, 0);
+    pv_point(pg, armStart);
+    pv_point(pg, hand);
+    pv_point(pg, pelvis);
+    pv_point(pg, knee);
+    pv_point(pg, ankle);
+    pv_point(pg, toe);
+  }
 
   pg.endDraw();
 

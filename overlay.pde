@@ -9,7 +9,7 @@ import processing.pdf.*;
 
 TreeMap<String, RShape> mapRanks;
 
-String[] arrSpecialSuits  = {"squat", "pullUp", "heart", "spade", "diamond", "club", "heart", "spade"};
+String[] arrSpecialSuits  = {"squat", "pullUp", "handstand", "spade", "diamond", "club", "heart", "spade"};
 String[] arrStandardSuits = {"diamond", "club", "heart", "spade"};
 String[] arrRanks         = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
@@ -19,6 +19,13 @@ int[]   arrRowCount  = { 13,  14,  12,  14,  15,  13,  12,    9};
   
 void pv_line(PGraphics pg, PVector start, PVector end) {
   pg.line(start.x, start.y, end.x, end.y);
+}
+
+void pv_point(PGraphics pg, PVector pv) {
+  pg.pushStyle();
+  pg.rectMode(RADIUS);
+  pg.rect(pv.x, pv.y, 5, 5);
+  pg.popStyle();
 }
 
 void loadRanks(String[] arr) {
@@ -141,7 +148,9 @@ void setup() {
 
   // Maybe we want to view a suit
   PGraphics pgView = null;
-//  PGraphics pgView = pullUp();
+//  PGraphics pgView = squat(true);
+//  PGraphics pgView = pullUp(true);
+//  PGraphics pgView = handstand(true);
 
   if (pgView != null) {
     pushMatrix();

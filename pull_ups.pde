@@ -1,12 +1,5 @@
 
-void pv_point(PGraphics pg, PVector pv) {
-  pg.pushStyle();
-  pg.rectMode(RADIUS);
-  pg.rect(pv.x, pv.y, 5, 5);
-  pg.popStyle();
-}
-
-PGraphics pullUp() {
+PGraphics pullUp(boolean bShowPoints) {
 
   int headHeight = 90;
   
@@ -43,17 +36,16 @@ PGraphics pullUp() {
   pg.strokeWeight(1);
   pg.ellipse(370, 60, headHeight, headHeight);
 
-  pg.stroke(255, 0, 0);
-
-  // Diagnostics
-  pv_point(pg, armStart);
-  pv_point(pg, elbow);
-  pv_point(pg, hand);
-  pv_point(pg, pelvis);
-  pv_point(pg, knee);
-  pv_point(pg, ankle);
-  pv_point(pg, toe);
-  // End of diagnostics
+  if (bShowPoints) {
+    pg.stroke(255, 0, 0);
+    pv_point(pg, armStart);
+    pv_point(pg, elbow);
+    pv_point(pg, hand);
+    pv_point(pg, pelvis);
+    pv_point(pg, knee);
+    pv_point(pg, ankle);
+    pv_point(pg, toe);
+  }
 
   pg.endDraw();
 
