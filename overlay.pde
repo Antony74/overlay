@@ -9,7 +9,7 @@ import processing.pdf.*;
 
 TreeMap<String, RShape> mapRanks;
 
-String[] arrSpecialSuits  = {"squat", "club", "heart", "spade", "diamond", "club", "heart", "spade"};
+String[] arrSpecialSuits  = {"squat", "pullUp", "heart", "spade", "diamond", "club", "heart", "spade"};
 String[] arrStandardSuits = {"diamond", "club", "heart", "spade"};
 String[] arrRanks         = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
@@ -141,7 +141,7 @@ void setup() {
 
   // Maybe we want to view a suit
   PGraphics pgView = null;
-//  PGraphics pgView = squat();
+//  PGraphics pgView = pullUp();
 
   if (pgView != null) {
     pushMatrix();
