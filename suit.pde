@@ -3,9 +3,10 @@ TreeMap<String, Suit> mapSuits;
 
 void loadSuits(String[] arr) {
 
-  mapSuits.put("squat",  new Suit(squat(false)));
-  mapSuits.put("pullUp", new Suit(pullUp(false)));
+  mapSuits.put("squat",     new Suit(squat(false)));
+  mapSuits.put("pullUp",    new Suit(pullUp(false)));
   mapSuits.put("handstand", new Suit(handstand(false)));
+  mapSuits.put("legRaise",  new Suit(legRaise(false)));
   
   for (int n = 0; n < arr.length; ++n) {
 
