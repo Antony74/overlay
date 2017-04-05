@@ -1,18 +1,18 @@
 
 PGraphics legRaise(boolean bShowPoints) {
 
-  int headHeight = 90;
-  int rAdj = 80;
+  int headHeight = 100;
+  int rAdj = 120;
   
   PGraphics pg = createGraphics(330 + rAdj, 280 + headHeight);
   pg.beginDraw();
   pg.rectMode(CENTER);
   pg.translate(460 + rAdj, 150 - headHeight);
 
-  PVector head     = new PVector(-380,  60);
+  PVector head     = new PVector(-410,  60);
   PVector armStart = new PVector(-375, 135);
   PVector elbow    = armStart;
-  PVector hand     = new PVector(-350,   0);
+  PVector hand     = new PVector(-350, -10);
   PVector pelvis   = new PVector(-344, 231);
   PVector knee     = new PVector(-260, 210);
   PVector ankle    = new PVector(-190, 215);
@@ -24,13 +24,13 @@ PGraphics legRaise(boolean bShowPoints) {
   pv_line(pg, armStart, elbow);
   pv_line(pg, elbow,    hand);
 
-  pg.strokeWeight(70);
+  pg.strokeWeight(100);
 
   pv_line(pg, armStart, pelvis);
   pv_line(pg, pelvis,   knee);
   pv_line(pg, knee,     ankle);
 
-  pg.strokeWeight(50);
+  pg.strokeWeight(80);
   pg.translate(10, 0);
   pv_line(pg, ankle, toe);
 
