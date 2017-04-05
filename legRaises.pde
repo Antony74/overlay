@@ -24,7 +24,7 @@ PGraphics legRaise(boolean bShowPoints) {
   pv_line(pg, armStart, elbow);
   pv_line(pg, elbow,    hand);
 
-  pg.strokeWeight(100);
+  pg.strokeWeight(90);
 
   pv_line(pg, armStart, pelvis);
   pv_line(pg, pelvis,   knee);
